@@ -1,7 +1,10 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "Gin-Template后端API\t  作者：木子木先生",
+        "title": "Gin-Template API接口文档",
+        "contact": {},
+        "version": "v1.0"
     },
     "paths": {}
 }

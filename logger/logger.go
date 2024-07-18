@@ -19,7 +19,7 @@ var lg *zap.Logger
 
 // InitLogger 初始化Loggerrt
 func InitLogger() (err error) {
-	writeSyncer := getLogWriter("STT.log", 200, 10, 7)
+	writeSyncer := getLogWriter("Gin-Template.log", 200, 10, 7)
 	encoder := getEncoder()
 	var l = new(zapcore.Level)
 	err = l.UnmarshalText([]byte("debug"))

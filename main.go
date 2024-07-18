@@ -3,11 +3,11 @@ package main
 import (
 	"Gin-Template/configs"
 	"Gin-Template/logger"
+	"Gin-Template/router"
 	"flag"
 	"fmt"
 	"log"
 
-	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
 
@@ -18,8 +18,10 @@ func init() {
 	flag.Parse()
 }
 
+// @title                       Gin-Template API接口文档
+// @version                     v1.0
+// @description                 Gin-Template后端API	  作者：木子木先生
 func main() {
-	r := gin.Default()
 
 	// 读取配置
 	conf, err := configs.LoadConfig(configPath)
@@ -31,8 +33,8 @@ func main() {
 
 	// 初始化日志配置 使用中间件
 	logger.InitLogger()
-	r.Use(logger.GinLogger(), logger.GinRecovery(true))
+	// r.Use(logger.GinLogger(), logger.GinRecovery(true))
 	zap.L().Info("Starting server...")
 
-	r.Run(":80")
+	router.StartServer()
 }
