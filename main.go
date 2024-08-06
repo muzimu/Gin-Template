@@ -36,5 +36,5 @@ func main() {
 	// r.Use(logger.GinLogger(), logger.GinRecovery(true))
 	zap.L().Info("Starting server...")
 
-	router.StartServer()
+	router.StartServer(conf)
 }
