@@ -11,13 +11,16 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger" // gin-swagger middleware
 )
 
+var Conf *configs.Conf
+
 func StartServer(conf *configs.Conf) {
+	Conf = conf
 	r := gin.Default()
 	r.Use(func() gin.HandlerFunc {
 		config := cors.DefaultConfig()
 		// config.AllowHeaders = append(config.AllowHeaders, conf.Http.AllowedHeaders...)
 		config.AllowHeaders = []string{"*"}
-		config.AllowOrigins = conf.Http.AllowedOrigins
+		config.AllowOrigins = Conf.Http.AllowedOrigins
 		config.AllowCredentials = true
 		return cors.New(config)
 	}())

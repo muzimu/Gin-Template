@@ -4,6 +4,7 @@ import (
 	"Gin-Template/configs"
 	"Gin-Template/logger"
 	"Gin-Template/router"
+	"Gin-Template/service"
 	"flag"
 	"fmt"
 	"log"
@@ -35,6 +36,6 @@ func main() {
 	logger.InitLogger()
 	// r.Use(logger.GinLogger(), logger.GinRecovery(true))
 	zap.L().Info("Starting server...")
-
+	service.InitService(conf)
 	router.StartServer(conf)
 }
