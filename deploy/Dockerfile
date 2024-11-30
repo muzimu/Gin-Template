@@ -15,7 +15,6 @@ RUN go build -o app main.go
 
 FROM registry.cn-shanghai.aliyuncs.com/muzimu/alpine:latest
 
-# RUN apk add libc6-compat
 RUN apk add gcompat
 
 EXPOSE 80

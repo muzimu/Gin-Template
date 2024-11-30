@@ -1,9 +1,13 @@
 package service
 
-import "Gin-Template/configs"
+import (
+	"Gin-Template/configs"
 
-var Conf *configs.Conf
+	"github.com/spf13/viper"
+)
 
-func InitService(conf *configs.Conf) {
-	Conf = conf
+var Conf *viper.Viper
+
+func InitService() {
+	Conf = configs.GetConfig()
 }
