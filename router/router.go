@@ -2,7 +2,7 @@ package router
 
 import (
 	"Gin-Template/configs"
-	_ "Gin-Template/docs"
+	"Gin-Template/docs"
 	"Gin-Template/logger"
 
 	"github.com/gin-contrib/cors"
@@ -28,8 +28,10 @@ func StartServer() {
 		return cors.New(config)
 	}())
 	r.Use(logger.GinLogger(), logger.GinRecovery(true))
+	// swagger采用配置文件
+	docs.SwaggerInfo.Host = Conf.GetString("http.host")
+	docs.SwaggerInfo.Schemes = Conf.GetStringSlice("http.schemes")
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-
 	port := Conf.GetString("http.port")
 	if port != "" {
 		lg.Info("Server start", zap.String("port", port))
