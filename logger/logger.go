@@ -61,7 +61,7 @@ func InitLogger(conf *viper.Viper) (err error) {
 
 func getEncoder() zapcore.Encoder {
 	encoderConfig := zap.NewProductionEncoderConfig()
-	encoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
+	encoderConfig.EncodeTime = zapcore.TimeEncoderOfLayout("2006-01-02 15:04:05.000")
 	encoderConfig.TimeKey = "time"
 	encoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder
 	encoderConfig.EncodeDuration = zapcore.SecondsDurationEncoder
@@ -80,24 +80,35 @@ func getLogWriter(filename string, maxSize, maxAge, maxBackup int) zapcore.Write
 }
 
 // GinLogger 接收gin框架默认的日志
-func GinLogger() gin.HandlerFunc {
+func GinLogger(ignorePath []string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		start := time.Now()
 		path := c.Request.URL.Path
 		query := c.Request.URL.RawQuery
 		c.Next()
 
+		checkIgnorePath := func() bool {
+			for _, item := range ignorePath {
+				if strings.HasPrefix(path, item) {
+					return true
+				}
+			}
+			return false
+		}
+
 		cost := time.Since(start)
-		lg.Info(path,
-			zap.Int("status", c.Writer.Status()),
-			zap.String("method", c.Request.Method),
-			zap.String("path", path),
-			zap.String("query", query),
-			zap.String("ip", c.ClientIP()),
-			zap.String("user-agent", c.Request.UserAgent()),
-			zap.String("errors", c.Errors.ByType(gin.ErrorTypePrivate).String()),
-			zap.Duration("cost", cost),
-		)
+		if !checkIgnorePath() {
+			lg.Info(path,
+				zap.Int("status", c.Writer.Status()),
+				zap.String("method", c.Request.Method),
+				zap.String("path", path),
+				zap.String("query", query),
+				zap.String("ip", c.ClientIP()),
+				zap.String("user-agent", c.Request.UserAgent()),
+				zap.String("errors", c.Errors.ByType(gin.ErrorTypePrivate).String()),
+				zap.Duration("cost", cost),
+			)
+		}
 	}
 }
 

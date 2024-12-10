@@ -27,7 +27,7 @@ func StartServer() {
 		config.AllowCredentials = true
 		return cors.New(config)
 	}())
-	r.Use(logger.GinLogger(), logger.GinRecovery(true))
+	r.Use(logger.GinLogger([]string{"/swagger"}), logger.GinRecovery(true))
 	// swagger采用配置文件
 	docs.SwaggerInfo.Host = Conf.GetString("http.host")
 	docs.SwaggerInfo.Schemes = Conf.GetStringSlice("http.schemes")
