@@ -6,7 +6,7 @@ app:
 http:
   port: ":80"
   host: "localhost"
-  basepath: ""
+  basepath: "/api"
   schemes:
     - "http"
   allowed_origins:

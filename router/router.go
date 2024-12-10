@@ -36,6 +36,10 @@ func StartServer() {
 	docs.SwaggerInfo.Version = Conf.GetString("app.version")
 	docs.SwaggerInfo.Description = Conf.GetString("app.description")
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	api := r.Group(Conf.GetString("http.basepath"))
+	{
+		api.GET("/ping", func(c *gin.Context) { c.JSON(200, "pong") })
+	}
 	port := Conf.GetString("http.port")
 	if port != "" {
 		lg.Info("Server start", zap.String("port", port))
