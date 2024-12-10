@@ -1,0 +1,15 @@
+http:
+  port: ":80"
+  host: "localhost"
+  schemes:
+    - "http"
+  allowed_origins:
+    - "*"
+
+logger:
+  level: "debug"
+  mode: "dev"
+  filename: "Gin-Template.log"
+  maxsize: 100
+  maxage: 7
+  maxbackups: 7

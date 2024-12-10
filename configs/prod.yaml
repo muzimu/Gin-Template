@@ -1,0 +1,16 @@
+http:
+  port: ":8080"
+  # 换成域名
+  host: "localhost"
+  schemes:
+    - "https"
+  allowed_origins:
+    - "*"
+
+logger:
+  level: "info"
+  mode: "prod"
+  filename: "Gin-Template.log"
+  maxsize: 100
+  maxage: 7
+  maxbackups: 7

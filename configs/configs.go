@@ -6,18 +6,16 @@ import (
 	"github.com/spf13/viper"
 )
 
-var Config *viper.Viper
+var Conf *viper.Viper
 
 // 载入配置
 func LoadConfig(path string) (*viper.Viper, error) {
-	Config = viper.New()
-	Config.SetConfigFile(path)
-	err := Config.ReadInConfig()
+	Conf = viper.New()
+	Conf.SetConfigFile(path)
+	err := Conf.ReadInConfig()
 	if err != nil {
 		fmt.Println("error occur!", err)
-		return Config, err
+		return Conf, err
 	}
-	return Config, nil
+	return Conf, nil
 }
-
-func GetConfig() *viper.Viper { return Config }

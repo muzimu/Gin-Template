@@ -1,5 +1,5 @@
 # 基础镜像
-FROM golang:1.22.3 as builder
+FROM golang:1.22.4 as builder
 
 LABEL maintainer="muzimu"
 

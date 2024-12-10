@@ -21,20 +21,39 @@ var lg *zap.Logger
 // InitLogger 初始化Loggerrt
 func InitLogger(conf *viper.Viper) (err error) {
 	var writeSyncer zapcore.WriteSyncer
-	if conf.Get("logfile_setting") != "" {
-		writeSyncer = getLogWriter(conf.GetString("logfile_setting.filename"), conf.GetInt("logfile_setting.max_size"), conf.GetInt("logfile_setting.max_age"), conf.GetInt("logfile_setting.max_backup"))
+	if conf.Get("logger") != "" {
+		writeSyncer = getLogWriter(conf.GetString("logger.filename"), conf.GetInt("logger.max_size"), conf.GetInt("logger.max_age"), conf.GetInt("logger.max_backup"))
 
 	} else {
 		writeSyncer = getLogWriter("Gin-Template.log", 100, 7, 7)
 	}
 	encoder := getEncoder()
-	var l = new(zapcore.Level)
-	err = l.UnmarshalText([]byte("debug"))
-	if err != nil {
-		return
+	var cores []zapcore.Core
+	var level zapcore.Level
+	switch conf.GetString("logger.level") {
+	case "debug":
+		level = zap.DebugLevel
+	case "info":
+		level = zap.InfoLevel
+	case "warn":
+		level = zap.WarnLevel
+	case "error":
+		level = zap.ErrorLevel
+	case "dpanic":
+		level = zap.DPanicLevel
+	case "panic":
+		level = zap.PanicLevel
 	}
-	core := zapcore.NewCore(encoder, writeSyncer, l)
 
+	switch conf.GetString("logger.mode") {
+
+	case "dev":
+		cores = append(cores, zapcore.NewCore(encoder, zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), writeSyncer), level))
+	case "prod":
+		cores = append(cores, zapcore.NewCore(encoder, writeSyncer, level))
+	}
+
+	core := zapcore.NewTee(cores...)
 	lg = zap.New(core, zap.AddCaller())
 	zap.ReplaceGlobals(lg) // 替换zap包中全局的logger实例，后续在其他包中只需使用zap.L()调用即可
 	return
