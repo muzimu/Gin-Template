@@ -30,6 +30,7 @@ func StartServer() {
 	r.Use(logger.GinLogger([]string{"/swagger"}), logger.GinRecovery(true))
 	// swagger采用配置文件
 	docs.SwaggerInfo.Host = Conf.GetString("http.host")
+	docs.SwaggerInfo.BasePath = Conf.GetString("http.basepath")
 	docs.SwaggerInfo.Schemes = Conf.GetStringSlice("http.schemes")
 	docs.SwaggerInfo.Title = Conf.GetString("app.name") + " API接口文档"
 	docs.SwaggerInfo.Version = Conf.GetString("app.version")
