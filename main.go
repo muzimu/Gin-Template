@@ -20,9 +20,6 @@ func init() {
 	rootCmd.Execute()
 }
 
-// @title                       Gin-Template API接口文档
-// @version                     v1.0
-// @description                 Gin-Template后端API	  作者：木子木先生
 func main() {
 	// 读取配置
 	conf, err := configs.LoadConfig(configPath)

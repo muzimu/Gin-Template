@@ -31,6 +31,9 @@ func StartServer() {
 	// swagger采用配置文件
 	docs.SwaggerInfo.Host = Conf.GetString("http.host")
 	docs.SwaggerInfo.Schemes = Conf.GetStringSlice("http.schemes")
+	docs.SwaggerInfo.Title = Conf.GetString("app.name") + " API接口文档"
+	docs.SwaggerInfo.Version = Conf.GetString("app.version")
+	docs.SwaggerInfo.Description = Conf.GetString("app.description")
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	port := Conf.GetString("http.port")
 	if port != "" {
